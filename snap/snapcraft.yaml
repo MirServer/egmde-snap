@@ -44,6 +44,22 @@ parts:
     stage-packages:
       - mir-graphics-drivers-desktop
       - libmiral3
+      - libfreetype6
+    prime:
+      - -lib/udev
+      - -usr/doc
+      - -usr/doc-base
+      - -usr/share/applications
+      - -usr/share/apport
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/doc-base
+      - -usr/share/icons
+      - -usr/share/libdrm
+      - -usr/share/libwacom
+      - -usr/share/lintian
+      - -usr/share/man
+      - -usr/share/pkgconfig
 
   launcher:
     plugin: dump
@@ -56,3 +72,18 @@ parts:
     plugin: nil
     stage-packages:
     - libgl1-mesa-dri
+    prime:
+      - -lib/udev
+      - -usr/doc
+      - -usr/doc-base
+      - -usr/share/applications
+      - -usr/share/apport
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/doc-base
+      - -usr/share/icons
+      - -usr/share/libdrm
+      - -usr/share/libwacom
+      - -usr/share/lintian
+      - -usr/share/man
+      - -usr/share/pkgconfig
