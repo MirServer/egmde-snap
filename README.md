@@ -25,4 +25,4 @@ Add the mir-team/release PPA *(or the /dev PPA for extra adventure)*:
 Build and install snap:
 
     snapcraft 
-    snap install --dangerous --classic ./egmde_0.1_amd64.snap
+    snap install --dangerous --classic ./egmde*.snap
