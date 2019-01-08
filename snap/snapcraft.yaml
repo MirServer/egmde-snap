@@ -38,7 +38,7 @@ parts:
       - libmiral-dev
       - libboost-filesystem-dev
       - libfreetype6-dev
-      - libxml++2.6-dev
+      - libwayland-dev
       - libxkbcommon-dev
     stage-packages:
       - mir-graphics-drivers-desktop
