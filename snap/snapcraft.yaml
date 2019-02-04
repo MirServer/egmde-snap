@@ -1,22 +1,21 @@
 name: egmde
-version: egmde
-version-script: |
-  LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/'$(git --git-dir=parts/egmde/src/.git rev-list --count HEAD)'+mir\1/p'
+adopt-info: egmde
 summary: A minimal example Mir based desktop shell
 description: A minimal example Mir based desktop shell
 confinement: classic
-grade: devel
+grade: stable
 base: core18
+
+environment:
+  # Prep for Mir
+  MIR_CLIENT_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/client-platform
+  MIR_SERVER_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform
+  __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
+  EGMDE_LAUNCH_PREFIX: "env -u __EGL_VENDOR_LIBRARY_DIRS --"
 
 apps:
   egmde:
     command: bin/egmde.launcher
-    environment:
-      # Prep for Mir
-      MIR_CLIENT_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/client-platform
-      MIR_SERVER_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform
-      __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
-      EGMDE_LAUNCH_PREFIX: "env -u __EGL_VENDOR_LIBRARY_DIRS --"
 
 parts:
   ppa-mir-release:
@@ -26,11 +25,13 @@ parts:
       sudo add-apt-repository -yu ppa:mir-team/release
       # We shouldn't need to install stuff here, but it seems to fix intermittent build failures
       sudo apt --assume-yes install libmiral-dev mir-graphics-drivers-desktop
-      sudo apt clean
       snapcraftctl pull
 
   egmde:
     after: [ppa-mir-release]
+    override-pull: |
+      snapcraftctl pull
+      snapcraftctl set-version `LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/'$(git --git-dir=$SNAPCRAFT_PART_SRC/.git rev-list --count HEAD)'-mir\1/p'`
     plugin: cmake
     source: https://github.com/AlanGriffiths/egmde.git
     build-packages:
