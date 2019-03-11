@@ -1,5 +1,5 @@
 name: egmde
-adopt-info: egmde
+adopt-info: egmde-snap
 summary: A minimal example Mir based desktop shell
 description: A minimal example Mir based desktop shell
 confinement: classic
@@ -29,12 +29,6 @@ parts:
 
   egmde:
     after: [ppa-mir-release]
-    override-pull: |
-      snapcraftctl pull
-      server_version=$(git --git-dir=$SNAPCRAFT_PART_SRC/.git rev-list --count HEAD)
-      recipe_version=-snap$(git --git-dir=$SNAPCRAFT_PRIME/../project/.git rev-list --count HEAD)
-      mir_version=`LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/-mir\1/p'`
-      snapcraftctl set-version $server_version$mir_version$recipe_version
     plugin: cmake
     source: https://github.com/AlanGriffiths/egmde.git
     build-packages:
@@ -70,6 +64,17 @@ parts:
     organize:
       egmde.launcher: bin/
       egmde.desktop: bin/
+
+  egmde-snap:
+    after: [ppa-mir-release, egmde]
+    plugin: nil
+    source: .
+    source-type: git
+    override-build: |
+      recipe_version=-snap$(git rev-list --count HEAD)
+      server_version=$(git -C ../../egmde/src rev-list --count HEAD)
+      mir_version=`LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/-mir\1/p'`
+      snapcraftctl set-version $server_version$mir_version$recipe_version
 
   mesa:
     plugin: nil
