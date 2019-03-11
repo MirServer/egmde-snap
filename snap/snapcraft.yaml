@@ -3,7 +3,6 @@ adopt-info: egmde-snap
 summary: A minimal example Mir based desktop shell
 description: A minimal example Mir based desktop shell
 confinement: classic
-grade: stable
 base: core18
 
 environment:
@@ -78,6 +77,7 @@ parts:
       recipe_version=-snap$(git rev-list --count HEAD)
       server_version=`cat $SNAPCRAFT_STAGE/egmde-version`
       mir_version=`LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/-mir\1/p'`
+      if echo $mir_version | grep dev; then snapcraftctl set-grade devel; else snapcraftctl set-grade stable; fi
       snapcraftctl set-version $server_version$mir_version$recipe_version
 
   mesa:
