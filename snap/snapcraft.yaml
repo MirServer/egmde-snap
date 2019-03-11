@@ -31,7 +31,10 @@ parts:
     after: [ppa-mir-release]
     override-pull: |
       snapcraftctl pull
-      snapcraftctl set-version `LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/'$(git --git-dir=$SNAPCRAFT_PART_SRC/.git rev-list --count HEAD)'-mir\1/p'`
+      server_version=$(git --git-dir=$SNAPCRAFT_PART_SRC/.git rev-list --count HEAD)
+      recipe_version=-snap$(git --git-dir=$SNAPCRAFT_PRIME/../project/.git rev-list --count HEAD)
+      mir_version=`LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/-mir\1/p'`
+      snapcraftctl set-version $server_version$mir_version$recipe_version
     plugin: cmake
     source: https://github.com/AlanGriffiths/egmde.git
     build-packages:
