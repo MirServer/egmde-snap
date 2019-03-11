@@ -42,7 +42,11 @@ parts:
       - mir-graphics-drivers-desktop
       - libmiral3
       - libfreetype6
+    override-pull: |
+      snapcraftctl pull
+      git rev-list --count HEAD > $SNAPCRAFT_PART_INSTALL/egmde-version
     prime:
+      - egmde-version
       - -lib/udev
       - -usr/doc
       - -usr/doc-base
@@ -72,7 +76,7 @@ parts:
     source-type: git
     override-build: |
       recipe_version=-snap$(git rev-list --count HEAD)
-      server_version=$(git -C ../../egmde/src rev-list --count HEAD)
+      server_version=`cat $SNAPCRAFT_STAGE/egmde-version`
       mir_version=`LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/-mir\1/p'`
       snapcraftctl set-version $server_version$mir_version$recipe_version
 
