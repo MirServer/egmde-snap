@@ -1,5 +1,5 @@
 name: egmde
-adopt-info: egmde-snap
+adopt-info: egmde
 summary: A minimal example Mir based desktop shell
 description: A minimal example Mir based desktop shell
 confinement: classic
@@ -17,7 +17,7 @@ apps:
     command: bin/egmde.launcher
 
 parts:
-  ppa-mir-release:
+  ppa-mir:
     plugin: nil
     override-pull: |
       sudo apt --assume-yes install software-properties-common
@@ -26,8 +26,26 @@ parts:
       sudo apt --assume-yes install libmiral-dev mir-graphics-drivers-desktop
       snapcraftctl pull
 
+  recipe-version:
+    after: [ppa-mir]
+    plugin: nil
+    source: .
+    source-type: git
+    override-pull: |
+      snapcraftctl pull
+      git rev-list --count HEAD > $SNAPCRAFT_PART_INSTALL/recipe-version
+    prime:
+      - -recipe-version
+
   egmde:
-    after: [ppa-mir-release]
+    after: [ppa-mir, recipe-version]
+    override-pull: |
+      snapcraftctl pull
+      server_version=`git rev-list --count HEAD`
+      mir_version=`LANG=C apt-cache policy mir-graphics-drivers-desktop | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/\1/p'`
+      recipe_version=`cat $SNAPCRAFT_STAGE/recipe-version`
+      snapcraftctl set-version $server_version-mir$mir_version-snap$recipe_version
+      if echo $mir_version | grep dev; then snapcraftctl set-grade devel; else snapcraftctl set-grade stable; fi
     plugin: cmake
     source: https://github.com/AlanGriffiths/egmde.git
     build-packages:
@@ -41,11 +59,7 @@ parts:
       - mir-graphics-drivers-desktop
       - libmiral3
       - libfreetype6
-    override-pull: |
-      snapcraftctl pull
-      git rev-list --count HEAD > $SNAPCRAFT_PART_INSTALL/egmde-version
     prime:
-      - egmde-version
       - -lib/udev
       - -usr/doc
       - -usr/doc-base
@@ -67,18 +81,6 @@ parts:
     organize:
       egmde.launcher: bin/
       egmde.desktop: bin/
-
-  egmde-snap:
-    after: [ppa-mir-release, egmde]
-    plugin: nil
-    source: .
-    source-type: git
-    override-build: |
-      recipe_version=-snap$(git rev-list --count HEAD)
-      server_version=`cat $SNAPCRAFT_STAGE/egmde-version`
-      mir_version=`LANG=C apt-cache policy libmircore1 | sed -rne 's/^\s+Candidate:\s+([^-]*)-.+$/-mir\1/p'`
-      if echo $mir_version | grep dev; then snapcraftctl set-grade devel; else snapcraftctl set-grade stable; fi
-      snapcraftctl set-version $server_version$mir_version$recipe_version
 
   mesa:
     plugin: nil
