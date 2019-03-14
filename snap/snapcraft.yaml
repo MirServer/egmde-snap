@@ -17,13 +17,6 @@ apps:
     command: bin/egmde.launcher
 
 parts:
-  ppa-mir:
-    plugin: nil
-    override-pull: |
-      sudo apt --assume-yes install software-properties-common
-      sudo add-apt-repository -yu ppa:mir-team/release
-      snapcraftctl pull
-
   recipe-version:
     plugin: nil
     source: .
@@ -34,7 +27,7 @@ parts:
       - -recipe-version
 
   egmde:
-    after: [ppa-mir, recipe-version]
+    after: [recipe-version]
     override-pull: |
       snapcraftctl pull
       server_version=`git rev-list --count HEAD`
@@ -42,7 +35,7 @@ parts:
       recipe_version=`cat $SNAPCRAFT_STAGE/recipe-version`
       snapcraftctl set-version $server_version-mir$mir_version-snap$recipe_version
       if echo $mir_version | grep dev; then snapcraftctl set-grade devel; else snapcraftctl set-grade stable; fi
-    plugin: cmake
+    plugin: cmake-with-ppa
     source: https://github.com/AlanGriffiths/egmde.git
     build-packages:
       - pkg-config
