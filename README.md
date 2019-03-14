@@ -16,11 +16,10 @@ Log out and select "egmde" session when logging back in.
 
 ## Build & install
 
-If you want to build it yourself this needs Ubuntu 18.04LTS.
+Check out the code:
 
-Add the mir-team/release PPA *(or the /dev PPA for extra adventure)*:
-
-    sudo add-apt-repository ppa:mir-team/release
+    git clone https://github.com/MirServer/egmde-snap.git
+    cd egmde-snap
 
 Build and install snap:
 
