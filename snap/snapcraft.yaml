@@ -10,7 +10,8 @@ environment:
   MIR_CLIENT_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/client-platform
   MIR_SERVER_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform
   __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
-  EGMDE_LAUNCH_PREFIX: "env -u __EGL_VENDOR_LIBRARY_DIRS --"
+  LIBGL_DRIVERS_PATH: $SNAP/usr/lib/x86_64-linux-gnu/dri
+  EGMDE_LAUNCH_PREFIX: "env -u __EGL_VENDOR_LIBRARY_DIRS -u LIBGL_DRIVERS_PATH --"
 
 apps:
   egmde:
