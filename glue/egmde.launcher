@@ -20,5 +20,20 @@ if x11_display=$(snapctl get x11-display); then
   fi
 fi
 
+if [ "$(lsb_release -c -s)" == "xenial" ]
+then
+  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=mir"
+  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=ubuntumirclient"
+  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=mir"
+  if [ "(grep version $SNAP/meta/snap.yaml | sed 's/[^-]*-\([^-]*\).*/\1/')" != "mir1.3.0" ]
+  then
+    enable_mirclient="--enable-mirclient"
+  else
+    enable_mirclient=""
+  fi
+else
+  enable_mirclient=""
+fi
+
 # Run server
-exec dbus-run-session -- $SNAP/bin/egmde $@
+exec dbus-run-session -- $SNAP/bin/egmde ${enable_mirclient} $@
