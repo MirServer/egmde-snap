@@ -25,7 +25,7 @@ then
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=mir"
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=ubuntumirclient"
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=mir"
-  if [ "(grep version $SNAP/meta/snap.yaml | sed 's/[^-]*-\([^-]*\).*/\1/')" != "mir1.3.0" ]
+  if [ "$(grep version $SNAP/meta/snap.yaml | sed 's/[^-]*-\([^-]*\).*/\1/')" != "mir1.3.0" ]
   then
     enable_mirclient="--enable-mirclient"
   else
