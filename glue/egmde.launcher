@@ -30,5 +30,17 @@ else
   enable_mirclient=""
 fi
 
+if [[ ! -e "$HOME/.config/egmde.config" ]]
+then
+  echo wallpaper-top=0x000000      >> "$HOME/.config/egmde.config"
+  if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "ubuntu" ]; then
+    echo wallpaper-bottom=0x92006a >> "$HOME/.config/egmde.config"
+  elif [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
+    echo wallpaper-bottom=0x25487c >> "$HOME/.config/egmde.config"
+  else
+    echo wallpaper-bottom=0x92006a >> "$HOME/.config/egmde.config"
+  fi
+fi
+
 # Run server
 exec dbus-run-session -- $SNAP/bin/egmde ${enable_mirclient} $@
