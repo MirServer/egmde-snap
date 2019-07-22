@@ -15,7 +15,7 @@ then
   export MIR_SERVER_X11_DISPLAY_EXPERIMENTAL=${x11_display}
 fi
 
-if [ "$(lsb_release -c -s)" == "xenial" ]
+if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]
 then
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=mir"
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=ubuntumirclient"
