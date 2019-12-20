@@ -4,6 +4,12 @@ set -e
 # For a classic snap this needs to be something sane
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
+# If there's another Wayland server, ignore WAYLAND_DISPLAY
+if [ -n "$WAYLAND_DISPLAY" ] && [ -e "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY.lock" ]
+then
+  unset WAYLAND_DISPLAY
+fi
+
 if which Xwayland > /dev/null
 then
   x11_display=0
