@@ -10,35 +10,24 @@ then
   unset WAYLAND_DISPLAY
 fi
 
-if which Xwayland > /dev/null
+x11_display=0
+
+while [ -e "/tmp/.X11-unix/X${x11_display}" ]; do
+  let x11_display+=1
+done
+
+if $SNAP/bin/egmde --help 2>&1 | grep '\--x11-display-experimental' > /dev/null
 then
-  x11_display=0
-
-  while [ -e "/tmp/.X11-unix/X${x11_display}" ]; do
-    let x11_display+=1
-  done
-
-  if $SNAP/bin/egmde --help 2>&1 | grep '\--x11-display-experimental' > /dev/null
-  then
-    export MIR_SERVER_X11_DISPLAY_EXPERIMENTAL=${x11_display}
-  else
-    export MIR_SERVER_X11_DISPLAY=${x11_display}
-  fi
+  export MIR_SERVER_X11_DISPLAY_EXPERIMENTAL=${x11_display}
+else
+  export MIR_SERVER_X11_DISPLAY=${x11_display}
 fi
 
 if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]
 then
-  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=mir"
-  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=ubuntumirclient"
-  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=mir"
-  if [ "$(grep version $SNAP/meta/snap.yaml | sed 's/[^-]*-\([^-]*\).*/\1/')" != "mir1.3.0" ]
-  then
-    enable_mirclient="--enable-mirclient"
-  else
-    enable_mirclient=""
-  fi
-else
-  enable_mirclient=""
+  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=x11"
+  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=xcb"
+  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=x11"
 fi
 
 if [[ ! -e "$HOME/.config/egmde.config" ]]
@@ -54,4 +43,4 @@ then
 fi
 
 # Run server
-exec dbus-run-session -- $SNAP/bin/egmde ${enable_mirclient} $@
+exec dbus-run-session -- $SNAP/bin/egmde $@
