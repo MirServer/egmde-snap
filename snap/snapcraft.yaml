@@ -39,7 +39,6 @@ parts:
       snapcraftctl set-version $server_version-mir$mir_version-snap$recipe_version
       if echo $mir_version | grep dev; then snapcraftctl set-grade devel; else snapcraftctl set-grade stable; fi
     plugin: cmake-with-ppa
-    ppa: mir-team/dev
     source: https://github.com/AlanGriffiths/egmde.git
     build-packages:
       - pkg-config
