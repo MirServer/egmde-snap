@@ -10,19 +10,6 @@ then
   unset WAYLAND_DISPLAY
 fi
 
-if $SNAP/bin/egmde --help 2>&1 | grep '\--x11-display-experimental' > /dev/null
-then
-  x11_display=0
-
-  while [ -e "/tmp/.X11-unix/X${x11_display}" ]; do
-    let x11_display+=1
-  done
-
-  export MIR_SERVER_X11_DISPLAY_EXPERIMENTAL=${x11_display}
-else
-  export MIR_SERVER_ENABLE_X11=
-fi
-
 if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]
 then
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=x11"
@@ -43,4 +30,4 @@ then
 fi
 
 # Run server
-exec dbus-run-session -- $SNAP/bin/egmde $@
+exec $SNAP/bin/egmde $@
