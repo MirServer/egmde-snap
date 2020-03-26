@@ -1,11 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir -p /usr/share/wayland-sessions/
 cp $SNAP/bin/egmde.desktop /usr/share/wayland-sessions/egmde.desktop
 
 # Ensure Wayland support is available for Qt apps
-if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "ubuntu" ]; then
+if which apt > /dev/null 2>&1
+then
   apt --assume-yes install qtwayland5
-#elif [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
-#  dnf --assumeyes  install qt5-qtwayland
+elif which dnf > /dev/null 2>&1
+then
+  env -u LD_LIBRARY_PATH dnf --assumeyes install qt5-qtwayland
 fi
