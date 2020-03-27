@@ -14,7 +14,7 @@ environment:
   LIBGL_DRIVERS_PATH: $SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
   EGMDE_LAUNCH_PREFIX: "env -u LD_LIBRARY_PATH -u __EGL_VENDOR_LIBRARY_DIRS -u LIBGL_DRIVERS_PATH -u EGMDE_LAUNCH_PREFIX --"
   PATH: ${PATH}:/snap/bin
-  LD_LIBRARY_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
+  LD_LIBRARY_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}:${SNAP}/lib/${SNAPCRAFT_ARCH_TRIPLET}
   XDG_DATA_DIRS: ${XDG_DATA_DIRS}:~/.local/share
 
 apps:
@@ -104,3 +104,4 @@ parts:
       - no-patchelf
     stage-packages:
       - xwayland
+      - libbz2-1.0
