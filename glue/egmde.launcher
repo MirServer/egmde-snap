@@ -8,7 +8,7 @@ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 if [ -n "$WAYLAND_DISPLAY" ] && [ -e "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]
 then
   # select an uncontested WAYLAND_DISPLAY
-  display=10
+  display=0
   while [ -e "${XDG_RUNTIME_DIR}/wayland-${display}" ]; do
       let display+=1
   done
