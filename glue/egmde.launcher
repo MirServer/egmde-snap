@@ -22,15 +22,22 @@ then
   export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=x11"
 fi
 
-if [[ ! -e "$HOME/.config/egmde.config" ]]
+config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
+if [[ ! -e "$config_dir" ]]
 then
-  echo wallpaper-top=0x000000      >> "$HOME/.config/egmde.config"
+  mkdir -p "$config_dir"
+fi
+
+config_file=$config_dir/egmde.config
+if [[ ! -e "$config_file" ]]
+then
+  echo wallpaper-top=0x000000      >> "$config_file"
   if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "ubuntu" ]; then
-    echo wallpaper-bottom=0x92006a >> "$HOME/.config/egmde.config"
+    echo wallpaper-bottom=0x92006a >> "$config_file"
   elif [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
-    echo wallpaper-bottom=0x25487c >> "$HOME/.config/egmde.config"
+    echo wallpaper-bottom=0x25487c >> "$config_file"
   else
-    echo wallpaper-bottom=0x92006a >> "$HOME/.config/egmde.config"
+    echo wallpaper-bottom=0x92006a >> "$config_file"
   fi
 fi
 
