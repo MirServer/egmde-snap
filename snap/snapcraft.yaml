@@ -50,8 +50,9 @@ parts:
       - libwayland-dev
       - libxkbcommon-dev
     stage-packages:
+      - try: [libmiral4]
+      - else: [libmiral3]
       - mir-graphics-drivers-desktop
-      - libmiral3
       - libfreetype6
     prime:
       - -lib/udev
