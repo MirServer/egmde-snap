@@ -16,6 +16,7 @@ environment:
   PATH: ${PATH}:/snap/bin
   LD_LIBRARY_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}:${SNAP}/lib/${SNAPCRAFT_ARCH_TRIPLET}
   XDG_DATA_DIRS: ${XDG_DATA_DIRS}:~/.local/share
+  XDG_CURRENT_DESKTOP: egmde
 
 apps:
   egmde:
@@ -49,6 +50,7 @@ parts:
       - libfreetype6-dev
       - libwayland-dev
       - libxkbcommon-dev
+      - g++
     stage-packages:
       - try: [libmiral4]
       - else: [libmiral3]
