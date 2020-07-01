@@ -50,6 +50,7 @@ parts:
       - libfreetype6-dev
       - libwayland-dev
       - libxkbcommon-dev
+      - g++
     stage-packages:
       - try: [libmiral4]
       - else: [libmiral3]
