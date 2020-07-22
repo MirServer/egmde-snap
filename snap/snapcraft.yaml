@@ -83,6 +83,7 @@ parts:
     plugin: nil
     stage-packages:
     - libgl1-mesa-dri
+    - libtinfo5
     build-attributes:
     - no-patchelf # Otherwise snapcraft may strip the build ID and cause the driver to crash
     prime:
