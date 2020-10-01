@@ -42,4 +42,4 @@ then
 fi
 
 # Run server
-exec $SNAP/bin/egmde $@
+exec "$SNAP/usr/local/bin/egmde" "$@"
