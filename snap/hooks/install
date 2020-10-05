@@ -1,13 +1,13 @@
 #!/bin/sh
 
 mkdir -p /usr/share/wayland-sessions/
-cp $SNAP/bin/egmde.desktop /usr/share/wayland-sessions/egmde.desktop
+cp "$SNAP"/bin/egmde.desktop /usr/share/wayland-sessions/egmde.desktop
 
 # Ensure Wayland support is available for Qt apps
-if which apt > /dev/null 2>&1
+if command -v apt > /dev/null 2>&1
 then
   apt --assume-yes install qtwayland5
-elif which dnf > /dev/null 2>&1
+elif command -v dnf > /dev/null 2>&1
 then
   dnf --assumeyes install qt5-qtwayland
 fi

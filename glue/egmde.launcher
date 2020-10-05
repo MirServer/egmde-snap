@@ -3,24 +3,20 @@ set -e
 LD_LIBRARY_PATH=${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}:${SNAP}/lib/${SNAPCRAFT_ARCH_TRIPLET}
 
 # For a classic snap this needs to be something sane
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
+XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # If there's an existing Wayland server, we're likely on a Wayland desktop
 if [ -n "$WAYLAND_DISPLAY" ] && [ -e "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]
 then
-  # select an uncontested WAYLAND_DISPLAY
-  display=0
-  while [ -e "${XDG_RUNTIME_DIR}/wayland-${display}" ]; do
-      let display+=1
-  done
-  WAYLAND_DISPLAY=wayland-${display}
+  # Allow egmde to select an uncontested WAYLAND_DISPLAY
+  unset WAYLAND_DISPLAY
 fi
 
 if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]
 then
-  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=x11"
-  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=xcb"
-  export EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=x11"
+  EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=x11"
+  EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=xcb"
+  EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=x11"
 fi
 
 config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
