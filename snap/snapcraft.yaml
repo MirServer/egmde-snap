@@ -5,22 +5,20 @@ description: A minimal example Mir based desktop shell
 confinement: classic
 base: core20
 
-environment:
-  # Prep for Mir
-  MIR_SERVER_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform
-  MIR_SERVER_XWAYLAND_PATH: ${SNAP}/usr/bin/Xwayland
-  MIR_SERVER_ENABLE_X11: 1
-  __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
-  LIBGL_DRIVERS_PATH: $SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
-  EGMDE_LAUNCH_PREFIX: "env -u LD_LIBRARY_PATH -u __EGL_VENDOR_LIBRARY_DIRS -u LIBGL_DRIVERS_PATH -u EGMDE_LAUNCH_PREFIX --"
-  PATH: ${PATH}:/snap/bin
-  LD_LIBRARY_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}:${SNAP}/lib/${SNAPCRAFT_ARCH_TRIPLET}
-  XDG_DATA_DIRS: ${XDG_DATA_DIRS}:~/.local/share
-  XDG_CURRENT_DESKTOP: egmde
-
 apps:
   egmde:
     command: bin/egmde.launcher
+    environment:
+      # Prep for Mir
+      MIR_SERVER_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform
+      MIR_SERVER_XWAYLAND_PATH: ${SNAP}/usr/bin/Xwayland
+      MIR_SERVER_ENABLE_X11: 1
+      __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
+      LIBGL_DRIVERS_PATH: $SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
+      EGMDE_LAUNCH_PREFIX: "env -u LD_LIBRARY_PATH -u __EGL_VENDOR_LIBRARY_DIRS -u LIBGL_DRIVERS_PATH -u EGMDE_LAUNCH_PREFIX --"
+      PATH: ${PATH}:/snap/bin
+      XDG_DATA_DIRS: ${XDG_DATA_DIRS}:~/.local/share
+      XDG_CURRENT_DESKTOP: egmde
 
 parts:
   recipe-version:

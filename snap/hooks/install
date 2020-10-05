@@ -9,5 +9,5 @@ then
   apt --assume-yes install qtwayland5
 elif which dnf > /dev/null 2>&1
 then
-  env -u LD_LIBRARY_PATH dnf --assumeyes install qt5-qtwayland
+  dnf --assumeyes install qt5-qtwayland
 fi
