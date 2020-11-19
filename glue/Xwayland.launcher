@@ -1,0 +1,6 @@
+#!/snap/egmde/current/bin/sh
+set -e
+unset LD_LIBRARY_PATH
+unset __EGL_VENDOR_LIBRARY_DIRS
+unset LIBGL_DRIVERS_PATH
+exec Xwayland "$@"
