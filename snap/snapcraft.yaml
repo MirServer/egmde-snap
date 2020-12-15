@@ -53,6 +53,7 @@ parts:
       if echo $mir_version | grep dev; then snapcraftctl set-grade devel; else snapcraftctl set-grade stable; fi
     plugin: cmake
     source: https://github.com/AlanGriffiths/egmde.git
+    source-branch: autostart
     override-build: |
       sudo apt install --assume-yes libmiral-dev
       snapcraftctl build
