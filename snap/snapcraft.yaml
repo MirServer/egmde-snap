@@ -25,6 +25,9 @@ apps:
       XDG_DATA_DIRS: ${XDG_DATA_DIRS}:~/.local/share
       XDG_CURRENT_DESKTOP: egmde
 
+  remote:
+    command: bin/egmde.remote
+
 parts:
   recipe-version:
     plugin: nil
@@ -92,10 +95,12 @@ parts:
     organize:
       egmde.launcher: bin/
       egmde.desktop: bin/
+      egmde.remote: bin/
       Xwayland.launcher: bin/
     override-build: |
       snapcraftctl build
       sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/egmde.launcher
+      sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/egmde.remote
 
   mesa:
     plugin: nil
