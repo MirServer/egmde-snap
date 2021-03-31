@@ -102,8 +102,10 @@ parts:
     stage-packages:
     - libgl1-mesa-dri
     - libtinfo5
-    - xwayland # included in this part because it tries to pull in mesa bits
+    # included in this part because it tries to pull in mesa bits
+    - xwayland
     - swaybg
+    - waybar
     stage:
       # The libraries in .../dri need no-patchelf, so they come from the mesa-unpatched part
       - -usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
