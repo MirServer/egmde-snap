@@ -37,11 +37,6 @@ then
   fi
 fi
 
-if ! which Xwayland &> /dev/null
-then
-  unset MIR_SERVER_ENABLE_X11
-fi
-
 # Run server
 export LD_LIBRARY_PATH=${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}:${SNAP}/lib/${SNAPCRAFT_ARCH_TRIPLET}
 exec "$SNAP/usr/local/bin/egmde" "$@"
