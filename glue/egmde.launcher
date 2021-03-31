@@ -11,13 +11,6 @@ then
   unset WAYLAND_DISPLAY
 fi
 
-if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]
-then
-  EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} GDK_BACKEND=x11"
-  EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} QT_QPA_PLATFORM=xcb"
-  EGMDE_LAUNCH_PREFIX="${EGMDE_LAUNCH_PREFIX} SDL_VIDEODRIVER=x11"
-fi
-
 config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
 if [[ ! -e "$config_dir" ]]
 then
@@ -34,6 +27,12 @@ then
     echo wallpaper-bottom=0x25487c >> "$config_file"
   else
     echo wallpaper-bottom=0x92006a >> "$config_file"
+  fi
+  if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]
+  then
+    # The Wayland support in the version of GTK, Qt and other toolkits from
+    # the 16.04 archive is poor, so we’ll have them use X11 via Xwayland.
+    echo "app-env-amend=GDK_BACKEND=x11:QT_QPA_PLATFORM=xcb:SDL_VIDEODRIVER=x11" >> "$config_file"
   fi
 fi
 
