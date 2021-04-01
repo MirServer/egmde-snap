@@ -28,14 +28,21 @@ then
   else
     echo wallpaper-bottom=0x92006a >> "$config_file"
   fi
-  if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]; then
-    # The Wayland support in the version of GTK, Qt and other toolkits from
-    # the 16.04 archive is poor, so we’ll have them use X11 via Xwayland.
-    echo "app-env-amend=GDK_BACKEND=x11:QT_QPA_PLATFORM=xcb:SDL_VIDEODRIVER=x11" >> "$config_file"
-  elif ! find /usr/lib/ /usr/lib64/ -name libqwayland-egl.so | grep -q .; then
-    # If Qt's Wayland platform isn't found, use X11
-    echo "app-env-amend=QT_QPA_PLATFORM=xcb" >> "$config_file"
+fi
+
+qtwayland_check=$SNAP_USER_COMMON/.qtwayland_check
+if [[ ! -e "$qtwayland_check" ]]; then
+  if ! grep -q ^app-env-amend= ~/.config/egmde.config; then
+    if [ "$(sed -Ene 's/^VERSION_CODENAME=(.*)/\1/p' /etc/os-release)" == "xenial" ]; then
+      # The Wayland support in the version of GTK, Qt and other toolkits from
+      # the 16.04 archive is poor, so we’ll have them use X11 via Xwayland.
+      echo "app-env-amend=GDK_BACKEND=x11:QT_QPA_PLATFORM=xcb:SDL_VIDEODRIVER=x11" >> "$config_file"
+    elif ! find /usr/lib/ /usr/lib64/ -name libqwayland-egl.so | grep -q .; then
+      # If Qt's Wayland platform isn't found, use X11
+      echo "app-env-amend=QT_QPA_PLATFORM=xcb" >> "$config_file"
+    fi
   fi
+  touch "$qtwayland_check"
 fi
 
 # Run server
