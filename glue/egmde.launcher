@@ -47,10 +47,10 @@ if ! grep -q "^[# ]*shell-components=" ~/.config/egmde.config; then
   echo "shell-components=/snap/egmde/current/bin/swaybg.launcher:/snap/egmde/current/bin/waybar.launcher" >> "$config_file"
 fi
 
-if [[ ! -e "~/.config/waybar/config" ]]
+if [[ ! -e "$config_dir/waybar/config" ]]
 then
-  mkdir -p ~/.config/waybar
-  cat > ~/.config/waybar/config <<EOF
+  mkdir -p $config_dir/waybar
+  cat > $config_dir/waybar/config <<EOF
 {
     "layer": "bottom", // Waybar at top layer
     "height": 30, // Waybar height (to be removed for auto height)
@@ -107,15 +107,15 @@ then
 EOF
 fi
 
-if [[ ! -e "~/.config/waybar/style.css" ]]
+if [[ ! -e "$config_dir/waybar/style.css" ]]
 then
-  mkdir -p ~/.config/waybar
-  cat > ~/.config/waybar/style.css <<EOF
+  mkdir -p $config_dir/waybar
+  cat > $config_dir/waybar/style.css <<EOF
 * {
     border: none;
     border-radius: 0;
     /* 'otf-font-awesome' is required to be installed for icons */
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: Ubuntu, FreeSans, Arial, sans-serif;
     font-size: 13px;
     min-height: 0;
 }
