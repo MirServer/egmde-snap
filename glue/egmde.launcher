@@ -44,7 +44,7 @@ if [[ ! -e "$qtwayland_check" ]]; then
 fi
 
 if ! grep -q "^[# ]*shell-components=" ~/.config/egmde.config; then
-  echo "shell-components=/snap/egmde/current/bin/swaybg.launcher:/snap/egmde/current/usr/bin/waybar" >> "$config_file"
+  echo "shell-components=/snap/egmde/current/bin/swaybg.launcher:/snap/egmde/current/bin/waybar.launcher" >> "$config_file"
 fi
 
 if [[ ! -e "~/.config/waybar/config" ]]

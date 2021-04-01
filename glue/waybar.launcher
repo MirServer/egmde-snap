@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+
+GDK_BACKEND=wayland exec ${SNAP}/usr/bin/waybar
