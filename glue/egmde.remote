@@ -1,7 +1,0 @@
-#!/snap/egmde/current/bin/sh
-set -ex
-unset LD_LIBRARY_PATH
-unset __EGL_VENDOR_LIBRARY_DIRS
-unset LIBGL_DRIVERS_PATH
-export MIR_SERVER_PLATFORM_GRAPHICS_LIB=$(find "$SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform" -name server-x11.so.*)
-exec sh -lc "egmde $@"

@@ -16,17 +16,14 @@ apps:
     environment:
       # Prep for Mir
       MIR_SERVER_PLATFORM_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/mir/server-platform
-      MIR_SERVER_XWAYLAND_PATH: ${SNAP}/bin/Xwayland.launcher
-      MIR_SERVER_APP_ENV: "GDK_BACKEND=wayland,x11:QT_QPA_PLATFORM=wayland:SDL_VIDEODRIVER=wayland:-QT_QPA_PLATFORMTHEME:NO_AT_BRIDGE=1:QT_ACCESSIBILITY:QT_LINUX_ACCESSIBILITY_ALWAYS_ON:_JAVA_AWT_WM_NONREPARENTING=1:MOZ_ENABLE_WAYLAND=1:-GTK_MODULES:-OOO_FORCE_DESKTOP:-GNOME_ACCESSIBILITY:-LD_LIBRARY_PATH:-__EGL_VENDOR_LIBRARY_DIRS:-LIBGL_DRIVERS_PATH"
+      MIR_SERVER_XWAYLAND_PATH: ${SNAP}/usr/bin/Xwayland
+      MIR_SERVER_APP_ENV: "GDK_BACKEND=wayland,x11:QT_QPA_PLATFORM=wayland:SDL_VIDEODRIVER=wayland:-QT_QPA_PLATFORMTHEME:NO_AT_BRIDGE=1:QT_ACCESSIBILITY:QT_LINUX_ACCESSIBILITY_ALWAYS_ON:_JAVA_AWT_WM_NONREPARENTING=1:MOZ_ENABLE_WAYLAND=1:-GTK_MODULES:-OOO_FORCE_DESKTOP:-GNOME_ACCESSIBILITY:-__EGL_VENDOR_LIBRARY_DIRS:-LIBGL_DRIVERS_PATH"
       MIR_SERVER_ENABLE_X11: 1
       __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
       LIBGL_DRIVERS_PATH: $SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
       PATH: ${PATH}:/snap/bin
       XDG_DATA_DIRS: ${XDG_DATA_DIRS}:~/.local/share
       XDG_CURRENT_DESKTOP: egmde
-
-  remote:
-    command: bin/egmde.remote
 
 parts:
   recipe-version:
@@ -95,37 +92,26 @@ parts:
     organize:
       egmde.launcher: bin/
       egmde.desktop: bin/
-      egmde.remote: bin/
-      Xwayland.launcher: bin/
     override-build: |
       snapcraftctl build
       sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/egmde.launcher
-      sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/egmde.remote
 
-  mesa:
+  mesa-patchelf:
     plugin: nil
     stage-packages:
     - libgl1-mesa-dri
     - libtinfo5
-    build-attributes:
-    - no-patchelf # Otherwise snapcraft may strip the build ID and cause the driver to crash
-    prime:
-      - -lib/udev
-      - -usr/doc
-      - -usr/doc-base
-      - -usr/share/applications
-      - -usr/share/apport
-      - -usr/share/bug
-      - -usr/share/doc
-      - -usr/share/doc-base
-      - -usr/share/icons
-      - -usr/share/libdrm
-      - -usr/share/libwacom
-      - -usr/share/lintian
-      - -usr/share/man
-      - -usr/share/pkgconfig
+    - xwayland # included in this part because it tries to pull in mesa bits
+    stage:
+      # The libraries in .../dri need no-patchelf, so they come from the mesa-unpatched part
+      - -usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
 
-  sh:
+  mesa-no-patchelf:
     plugin: nil
     stage-packages:
-      - dash
+      - libgl1-mesa-dri
+    build-attributes:
+      - no-patchelf # Otherwise snapcraft may strip the build ID and cause the driver to crash
+    stage:
+      # Only the libraries in .../dri need to not be patched, the rest come from the mesa part
+      - usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
