@@ -92,16 +92,21 @@ parts:
     organize:
       egmde.launcher: bin/
       egmde.desktop: bin/
+      swaybg.launcher: bin/
+      waybar.launcher: bin/
     override-build: |
       snapcraftctl build
-      sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/egmde.launcher
+      sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/swaybg.launcher
 
   mesa-patchelf:
     plugin: nil
     stage-packages:
     - libgl1-mesa-dri
     - libtinfo5
-    - xwayland # included in this part because it tries to pull in mesa bits
+    # included in this part because it tries to pull in mesa bits
+    - xwayland
+    - swaybg
+    - waybar
     stage:
       # The libraries in .../dri need no-patchelf, so they come from the mesa-unpatched part
       - -usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
