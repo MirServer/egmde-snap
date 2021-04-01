@@ -95,7 +95,7 @@ parts:
       swaybg.launcher: bin/
     override-build: |
       snapcraftctl build
-      sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/egmde.launcher
+      sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/swaybg.launcher
 
   mesa-patchelf:
     plugin: nil
