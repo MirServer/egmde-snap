@@ -21,9 +21,7 @@ config_file=$config_dir/egmde.config
 if [[ ! -e "$config_file" ]]
 then
   echo wallpaper-top=0x000000      >> "$config_file"
-  if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "ubuntu" ]; then
-    echo wallpaper-bottom=0x92006a >> "$config_file"
-  elif [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
+  if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
     echo wallpaper-bottom=0x25487c >> "$config_file"
   else
     echo wallpaper-bottom=0x92006a >> "$config_file"
