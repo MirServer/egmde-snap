@@ -6,4 +6,6 @@ if [ -e "${background}" ]; then
   export GDK_PIXBUF_MODULEDIR="$SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/gdk-pixbuf-2.0/2.10.0/loaders"
   export GDK_PIXBUF_MODULE_FILE="$SNAP_COMMON/loaders.cache"
   GDK_BACKEND=wayland exec "${SNAP}/usr/bin/swaybg" -i "${background}"
+else
+  echo "Warning background image doesn't exist: ${background}"
 fi
