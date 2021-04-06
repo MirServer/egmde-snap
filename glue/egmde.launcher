@@ -47,6 +47,17 @@ if ! grep -q "^[# ]*shell-components=" ~/.config/egmde.config; then
   echo "shell-components=/snap/egmde/current/bin/swaybg.launcher:/snap/egmde/current/bin/waybar.launcher" >> "$config_file"
 fi
 
+if ! grep -q "^[# ]*swaybg.image=" ~/.config/egmde.config; then
+  # Try copying GNOME background
+  background=$(gsettings get org.gnome.desktop.background picture-uri | sed -Ee "s|[^:]*://(.*\.png)'$|\1|")
+  if [[ ! -e "${background}" ]]; then
+    # fall back to Ubuntu default
+    background="/usr/share/backgrounds/warty-final-ubuntu.png"
+  fi
+
+  echo "swaybg.image=${background}" >> "$config_file"
+fi
+
 if [[ ! -e "$config_dir/waybar/config" ]]
 then
   mkdir -p $config_dir/waybar
