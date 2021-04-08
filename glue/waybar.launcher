@@ -1,4 +1,5 @@
 #!/bin/sh
 set -e
 
+# The snapped waybar uses Wayland everywhere
 GDK_BACKEND=wayland exec ${SNAP}/usr/bin/waybar
