@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec sh -l -c 'exec egmde --shell-enable-autostart 2>1 > egmde.log'
