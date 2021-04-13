@@ -91,6 +91,7 @@ parts:
     source: glue
     organize:
       egmde.launcher: bin/
+      egmde-session: bin/
       egmde.desktop: bin/
       swaybg.launcher: bin/
       waybar.launcher: bin/
