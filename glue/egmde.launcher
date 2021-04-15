@@ -66,8 +66,8 @@ if ! grep -q "^[# ]*swaybg.image=" ~/.config/egmde.config; then
   fi
 
   echo "" >> "$config_file"
-  echo "# The background image used by swaybg.launcher" >> "$config_file"
-  echo "swaybg.image=${background}" >> "$config_file"
+  echo "# Uncomment this to set a background image for swaybg.launcher" >> "$config_file"
+  echo "#swaybg.image=${background}" >> "$config_file"
 fi
 
 if [[ ! -e "$config_dir/waybar/config" ]]
