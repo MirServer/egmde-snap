@@ -29,6 +29,13 @@ then
   fi
 fi
 
+if ! grep -q "^[# ]*enable-x11=" ~/.config/egmde.config; then
+  echo "
+# Setup support for X11 apps (comment out to disable)
+enable-x11=
+xwayland-path=/snap/egmde/current/usr/bin/Xwayland" >> "$config_file"
+fi
+
 if ! grep -q "^[# ]*no-of-workspaces=" ~/.config/egmde.config; then
   echo "" >> "$config_file"
   echo "# Uncomment this to enable workspaces" >> "$config_file"
@@ -44,6 +51,7 @@ if [[ ! -e "$qtwayland_check" ]]; then
       echo "# the 16.04 archive is poor, so we’ll instruct them use X11 via Xwayland." >> "$config_file"
       echo "app-env-amend=GDK_BACKEND=x11:QT_QPA_PLATFORM=xcb:SDL_VIDEODRIVER=x11" >> "$config_file"
     elif ! find /usr/lib/ /usr/lib64/ -name libqwayland-egl.so | grep -q .; then
+      echo "" >> "$config_file"
       echo "# Qt's Wayland platform isn't found, instruct Qt to use X11" >> "$config_file"
       echo "app-env-amend=QT_QPA_PLATFORM=xcb" >> "$config_file"
     fi
