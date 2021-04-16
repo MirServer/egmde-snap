@@ -29,6 +29,13 @@ then
   fi
 fi
 
+if ! grep -q "^[# ]*enable-x11=" ~/.config/egmde.config; then
+  echo "
+# Setup support for X11 apps (comment out to disable)
+enable-x11=
+xwayland-path=/snap/egmde/current/usr/bin/Xwayland" >> "$config_file"
+fi
+
 if ! grep -q "^[# ]*no-of-workspaces=" ~/.config/egmde.config; then
   echo "" >> "$config_file"
   echo "# Uncomment this to enable workspaces" >> "$config_file"
