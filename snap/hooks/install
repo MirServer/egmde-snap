@@ -10,4 +10,4 @@ done
 
 export GDK_PIXBUF_MODULEDIR="$SNAP/usr/lib/${ARCH_TRIPLET}/gdk-pixbuf-2.0/2.10.0/loaders"
 export GDK_PIXBUF_MODULE_FILE="$SNAP_COMMON/loaders.cache"
-$SNAP/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+$SNAP/usr/lib/${ARCH_TRIPLET}/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
