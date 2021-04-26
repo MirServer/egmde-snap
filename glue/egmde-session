@@ -1,3 +1,8 @@
 #!/bin/sh
 
-exec sh -l -c 'exec egmde --shell-enable-autostart'
+if grep -q ^VERSION_CODENAME=xenial$ /etc/os-release; then
+  exec dbus-run-session -- sh -l -c 'exec egmde --shell-enable-autostart'
+else
+  exec sh -l -c 'exec egmde --shell-enable-autostart'
+fi
+
