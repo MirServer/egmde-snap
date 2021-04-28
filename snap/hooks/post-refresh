@@ -2,6 +2,10 @@
 
 mkdir -p /usr/share/wayland-sessions/
 cp "$SNAP"/bin/egmde.desktop /usr/share/wayland-sessions/egmde.desktop
+if grep -q ^VERSION_CODENAME=xenial$ /etc/os-release; then
+  # Hack egmde.desktop to work on Xenial
+  sed "s/Exec=sh/Exec=dbus-run-session sh/g" --in-place /usr/share/wayland-sessions/egmde.desktop
+fi
 
 for x in "x86_64-linux-gnu" "aarch64-linux-gnu" "arm-linux-gnueabihf";
 do
