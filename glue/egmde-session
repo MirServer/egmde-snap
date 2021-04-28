@@ -1,3 +1,4 @@
 #!/bin/sh
 
 exec sh -l -c 'exec egmde --shell-enable-autostart'
+
