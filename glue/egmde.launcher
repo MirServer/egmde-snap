@@ -18,29 +18,54 @@ then
 fi
 
 config_file=$config_dir/egmde.config
-if [[ ! -e "$config_file" ]]
-then
-  echo "# Colors used by the default egmde background" >> "$config_file"
-  echo wallpaper-top=0x000000      >> "$config_file"
-  if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
-    echo wallpaper-bottom=0x25487c >> "$config_file"
-  else
-    echo wallpaper-bottom=0x92006a >> "$config_file"
+
+config_entry() {
+  if ! grep -q "^[# ]*${1##?[#\ ]}=" "${config_file}"; then
+    cat <<EOT >> "${config_file}"
+
+# $3
+$1=${2}
+EOT
   fi
+}
+
+# Set the background according to host color scheme
+if [ "$(sed -Ene 's/^ID=(.*)/\1/p' /etc/os-release)" = "fedora" ]; then
+  wallpaper_bottom=0x25487c
+else
+  wallpaper_bottom=0x92006a
 fi
 
-if ! grep -q "^[# ]*enable-x11=" ~/.config/egmde.config; then
-  echo "
-# Setup support for X11 apps (comment out to disable)
-enable-x11=
-xwayland-path=/snap/egmde/current/usr/bin/Xwayland" >> "$config_file"
+# Try copying GNOME background
+background=$(gsettings get org.gnome.desktop.background picture-uri | sed -Ee "s|[^:]*://(.*\.png)'$|\1|")
+if [[ ! -e "${background}" ]]; then
+  # fall back to Ubuntu default
+  background="/usr/share/backgrounds/warty-final-ubuntu.png"
 fi
 
-if ! grep -q "^[# ]*no-of-workspaces=" ~/.config/egmde.config; then
-  echo "" >> "$config_file"
-  echo "# Uncomment this to enable workspaces" >> "$config_file"
-  echo "#no-of-workspaces=4" >> "$config_file"
+if [ ! -e "${config_file}" ]; then
+cat <<EOT > "${config_file}"
+# Configuration file for egmde
+# ============================ 
+# The following entries may be edited (or commented in or out) to adjust the
+# desktop environment. If they are removed, then defaults will be 
+# automatically restored.
+EOT
 fi
+
+snap="/snap/egmde/current"
+
+config_entry "wallpaper-top"      "0x000000"                  "Color used by the default egmde background"
+config_entry "wallpaper-bottom"   "$wallpaper_bottom"         "Color used by the default egmde background"
+
+config_entry "enable-x11"         ""                          "Setup support for X11 apps (comment out to disable)"
+config_entry "xwayland-path"      "$snap/usr/bin/Xwayland"    "Path to the Xwayland binary"
+
+config_entry "# no-of-workspaces" "4"                         "Uncomment this to enable workspaces"
+
+config_entry "shell-components"   "$snap/bin/swaybg.launcher:$snap/bin/waybar.launcher" "Adds the snapped swaybg and waybar to the desktop environment"
+config_entry "# swaybg.image"     "${background}"             "Uncomment this to set a background image for swaybg.launcher"
+
 
 qtwayland_check=$SNAP_USER_COMMON/.qtwayland_check
 if [[ ! -e "$qtwayland_check" ]]; then
@@ -57,25 +82,6 @@ if [[ ! -e "$qtwayland_check" ]]; then
     fi
   fi
   touch "$qtwayland_check"
-fi
-
-if ! grep -q "^[# ]*shell-components=" ~/.config/egmde.config; then
-  echo "" >> "$config_file"
-  echo "# Adds the snapped swaybg and waybar to the desktop environment" >> "$config_file"
-  echo "shell-components=/snap/egmde/current/bin/swaybg.launcher:/snap/egmde/current/bin/waybar.launcher" >> "$config_file"
-fi
-
-if ! grep -q "^[# ]*swaybg.image=" ~/.config/egmde.config; then
-  # Try copying GNOME background
-  background=$(gsettings get org.gnome.desktop.background picture-uri | sed -Ee "s|[^:]*://(.*\.png)'$|\1|")
-  if [[ ! -e "${background}" ]]; then
-    # fall back to Ubuntu default
-    background="/usr/share/backgrounds/warty-final-ubuntu.png"
-  fi
-
-  echo "" >> "$config_file"
-  echo "# Uncomment this to set a background image for swaybg.launcher" >> "$config_file"
-  echo "#swaybg.image=${background}" >> "$config_file"
 fi
 
 if [[ ! -e "$config_dir/waybar/config" ]]
