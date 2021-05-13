@@ -19,6 +19,9 @@ fi
 
 config_file=$config_dir/egmde.config
 
+# Usage: config_entry <key> <value> <doc comment>
+# Checks to see if there's an existing config entry for key (possibly commented out) and,
+# if not, adds the key (possibly commented out), value and prefixes the doc comment.
 config_entry() {
   if ! grep -q "^[# ]*${1##?[#\ ]}=" "${config_file}"; then
     cat <<EOT >> "${config_file}"
