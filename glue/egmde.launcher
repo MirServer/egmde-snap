@@ -68,6 +68,7 @@ config_entry "# no-of-workspaces" "4"                         "Uncomment this to
 
 config_entry "shell-components"   "$snap/bin/swaybg.launcher:$snap/bin/waybar.launcher" "Adds the snapped swaybg and waybar to the desktop environment"
 config_entry "# swaybg.image"     "${background}"             "Uncomment this to set a background image for swaybg.launcher"
+config_entry "x11-window-title"   "egmde"                     "Title used by Mir-on-X window (with Mir 2.8)"
 
 
 qtwayland_check=$SNAP_USER_COMMON/.qtwayland_check
