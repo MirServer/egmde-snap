@@ -30,6 +30,9 @@ apps:
   login:
     command: bin/egmde-session
 
+  remote:
+    command: bin/egmde.remote
+
 parts:
   recipe-version:
     plugin: nil
@@ -90,6 +93,7 @@ parts:
       egmde.desktop: bin/
       swaybg.launcher: bin/
       waybar.launcher: bin/
+      egmde.remote: bin/
     override-build: |
       snapcraftctl build
       sed s/\$\{SNAPCRAFT_ARCH_TRIPLET}/${SNAPCRAFT_ARCH_TRIPLET}/g --in-place $SNAPCRAFT_PART_INSTALL/swaybg.launcher
