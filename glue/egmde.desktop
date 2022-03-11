@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=egmde
 Comment=The example Mir server
-Exec=sh -lc /snap/egmde/current/bin/egmde-session
+Exec=egmde.login
 Type=Application

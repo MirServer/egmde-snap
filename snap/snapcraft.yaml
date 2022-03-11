@@ -27,6 +27,9 @@ apps:
       XDG_CURRENT_DESKTOP: egmde
       LIBINPUT_QUIRKS_DIR: ${SNAP}/usr/share/libinput
 
+  login:
+    command: bin/egmde-session
+
 parts:
   recipe-version:
     plugin: nil
