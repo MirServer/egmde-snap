@@ -12,7 +12,7 @@ then
   exit
 fi
 
-ssh -T -L 5900:localhost:5900 $* -- bash -el <<EOT
+ssh -T -L 5900:localhost:5900 "$@" -- bash -el <<EOT
 if command -v x11vnc &> /dev/null && command -v Xvfb &> /dev/null && command -v egmde.login &> /dev/null
 then
   x11vnc -create -localhost -cursor none -env FD_PROG=egmde.login -env FD_GEOM=${EGMDE_REMOTE_OUTPUT:-1280x1028}\
