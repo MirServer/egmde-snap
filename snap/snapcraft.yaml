@@ -64,7 +64,10 @@ parts:
       - g++
       - make
     stage-packages:
-      - libmiral4
+      - try:
+          - libmiral5
+      - else:
+          - libmiral4
       - mir-graphics-drivers-desktop
       - libfreetype6
       - fonts-freefont-ttf
